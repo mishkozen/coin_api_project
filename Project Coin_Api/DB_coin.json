@@ -1,0 +1,17 @@
+{
+    "bitcoin": {
+        "last_price": 75826,
+        "max_price": 75881,
+        "min_price": 75823
+    },
+    "ethereum": {
+        "last_price": 2080.86,
+        "max_price": 2082.58,
+        "min_price": 2080.66
+    },
+    "solana": {
+        "last_price": 83.75,
+        "max_price": 83.85,
+        "min_price": 83.75
+    }
+}

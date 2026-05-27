@@ -1,0 +1,36 @@
+{
+    "241361": {
+        "name": "Misha",
+        "password": "12345",
+        "portfolio": {
+            "bitcoin": {
+                "name": "bitcoin",
+                "amount": 2
+            },
+            "solana": {
+                "name": "solana",
+                "amount": 4
+            }
+        }
+    },
+    "716936": {
+        "name": "Mishka",
+        "password": "12345",
+        "portfolio": {
+            "solana": {
+                "name": "solana",
+                "amount": 5
+            }
+        }
+    },
+    "396490": {
+        "name": "Misha_test",
+        "password": "12345",
+        "portfolio": {}
+    },
+    "755923": {
+        "name": "Misha",
+        "password": "12345",
+        "portfolio": {}
+    }
+}
