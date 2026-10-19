@@ -157,6 +157,24 @@ def update_coin_db(data_dict):
     with open(COIN_DB,"w") as file:
         json.dump(data_dict,file,indent=4)
 
+def fetch_coin_price(coin_names: dict[str], url: str) -> dict[str, float]:
+    try: 
+        response = requests.get(url,params={"ids": ",".join(coin_names),"vs_currencies": "usd" }, verify=False, timeout=5)
+        response.raise_for_status()
+        data = response.json()
+    except response.RequestsExceptions as e:
+        print(f"Error: {e}")
+        data = {}
+    return data
+    
+def price_trend(last_price: float, current_price: float) -> str:
+    if last_price > current_price:
+        change_price = "↓"
+    elif last_price < current_price:
+        change_price = "↑"
+    else:
+        change_price = "-"
+    return change_price
 
 def coin_dashboard(user_portfolio,data_dict):
     clear_screen()
@@ -167,43 +185,33 @@ def coin_dashboard(user_portfolio,data_dict):
         if not coin_names:
             print("Input can't be empty :)")
             continue
-        coins = ",".join(coin_names)
-        url = f"https://api.coingecko.com/api/v3/simple/price?ids={coins}&vs_currencies=usd"
+        url = "https://api.coingecko.com/api/v3/simple/price?ids=&vs_currencies="
 
         while True:
             clear_screen()
             print("|-----COIN DASHBOARD-----|")
-            response = requests.get(url, verify=False, timeout=5)
-            if not response.ok:
-                print("API error")
-                continue
-            data = response.json()
+            api_prices = fetch_coin_price(coin_names, url)        
             for coin in coin_names:
-                if coin not in data:
+                if coin not in api_prices:
                     print(f"\nSuch coin ({coin}) doesn't exist :(")
                     continue
-                price = data[coin]["usd"]
+                price = api_prices[coin]["usd"]
 
                 if coin not in data_dict:
-                    change_price = "-"
+                    price_change = "-"
                     data_dict[coin] = {
                         "last_price": price,
                         "max_price": price,
                         "min_price": price
                     }
-                else:
-                    if data_dict[coin]["last_price"] > price:
-                        change_price = "↓"
-                    elif data_dict[coin]["last_price"] > price:
-                        change_price = "↑"
-                    else:
-                        change_price = "-"
+                
+                price_change = price_trend(data_dict[coin]["last_price"], price)
 
-                    if data_dict[coin]["max_price"]<price:
-                        data_dict[coin]["max_price"] = price
-                    if data_dict[coin]["min_price"]>price:
-                        data_dict[coin]["min_price"] = price
-                print(f"\nPrice for {coin}: {price} usd{change_price}\n"
+                if data_dict[coin]["max_price"]<price:
+                    data_dict[coin]["max_price"] = price
+                if data_dict[coin]["min_price"]>price:
+                    data_dict[coin]["min_price"] = price
+                print(f"\nPrice for {coin}: {price} usd {price_change}\n"
                       f"Last price: {data_dict[coin]["last_price"]}\n"
                       f"Max price: {data_dict[coin]["max_price"]}\n"
                       f"Min price: {data_dict[coin]["min_price"]}")
