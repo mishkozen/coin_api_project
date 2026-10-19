@@ -26,7 +26,12 @@
     "396490": {
         "name": "Misha_test",
         "password": "12345",
-        "portfolio": {}
+        "portfolio": {
+            "bitcoin": {
+                "name": "bitcoin",
+                "amount": 3
+            }
+        }
     },
     "755923": {
         "name": "Misha",

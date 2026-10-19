@@ -1,14 +1,18 @@
 import requests, urllib3, time, os, random, json
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+USER_DB = os.path.join(BASE_DIR, "DB_user.json")
+COIN_DB = os.path.join(BASE_DIR, "DB_coin.json")
+
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def read_info_user_db():
-    with open("DB_user.json","r") as file:
+    with open(USER_DB,"r") as file:
         data = json.load(file)
     return data
 def read_info_coin_db():
-    with open("DB_coin.json","r") as file:
+    with open(COIN_DB,"r") as file:
         data = json.load(file)
     return data
 def registration():
@@ -23,11 +27,11 @@ def registration():
             "portfolio":new_portfolio
         }
 
-    with open("DB_user.json","r") as file:
+    with open(USER_DB,"r") as file:
         data = json.load(file)
         file.close()
     data[new_address] = new_data
-    with open("DB_user.json","w") as file:
+    with open(USER_DB,"w") as file:
         json.dump(data,file,indent=4)
         file.close()
     clear_screen()
@@ -147,10 +151,10 @@ def sell_page(user_portfolio):
     return user_portfolio
 def update_user_db(data_dict,address,user_portfolio):
     data_dict[address]["portfolio"] = user_portfolio
-    with open("DB_user.json","w") as file:
+    with open(USER_DB,"w") as file:
         json.dump(data_dict,file,indent=4)
 def update_coin_db(data_dict):
-    with open("DB_coin.json","w") as file:
+    with open(COIN_DB,"w") as file:
         json.dump(data_dict,file,indent=4)
 
 
