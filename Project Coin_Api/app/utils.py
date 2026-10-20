@@ -157,14 +157,14 @@ def update_coin_db(data_dict):
     with open(COIN_DB,"w") as file:
         json.dump(data_dict,file,indent=4)
 
-def fetch_coin_price(coin_names: dict[str], url: str) -> dict[str, float]:
+def fetch_coin_price(coin_names: list[str], url: str) -> dict[str,dict[str, float]] | None:
     try: 
-        response = requests.get(url,params={"ids": ",".join(coin_names),"vs_currencies": "usd" }, verify=False, timeout=5)
+        response = requests.get(url,params={"ids": ",".join(coin_names),"vs_currencies": "usd" }, timeout=5)
         response.raise_for_status()
         data = response.json()
-    except response.RequestsExceptions as e:
+    except requests.RequestsExceptions as e:
         print(f"Error: {e}")
-        data = {}
+        data = None
     return data
     
 def price_trend(last_price: float, current_price: float) -> str:
@@ -185,12 +185,14 @@ def coin_dashboard(user_portfolio,data_dict):
         if not coin_names:
             print("Input can't be empty :)")
             continue
-        url = "https://api.coingecko.com/api/v3/simple/price?ids=&vs_currencies="
+        url = "https://api.coingecko.com/api/v3/simple/price"
 
         while True:
             clear_screen()
             print("|-----COIN DASHBOARD-----|")
-            api_prices = fetch_coin_price(coin_names, url)        
+            api_prices = fetch_coin_price(coin_names, url)  
+            if api_prices == None:
+                continue      
             for coin in coin_names:
                 if coin not in api_prices:
                     print(f"\nSuch coin ({coin}) doesn't exist :(")
