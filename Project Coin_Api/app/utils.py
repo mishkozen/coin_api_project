@@ -194,7 +194,9 @@ def coin_dashboard(user_portfolio,data_dict):
             if api_prices == None:
                 time.sleep(15)
                 index += 1
-                continue      
+                continue
+            else: 
+                index = 0
             for coin in coin_names:
                 if coin not in api_prices:
                     print(f"\nSuch coin ({coin}) doesn't exist :(")
@@ -228,7 +230,7 @@ def coin_dashboard(user_portfolio,data_dict):
             if exit_input == "exit":
                 clear_screen()
                 break
-            if index >= 3:
-                print("Api error :( \nTry to use dashboard later!")
+        if index >= 3:
+            print("Api error :( \nTry to use dashboard later!")
         break
     return data_dict
