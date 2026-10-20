@@ -162,7 +162,7 @@ def fetch_coin_price(coin_names: list[str], url: str) -> dict[str,dict[str, floa
         response = requests.get(url,params={"ids": ",".join(coin_names),"vs_currencies": "usd" }, timeout=5)
         response.raise_for_status()
         data = response.json()
-    except requests.RequestsExceptions as e:
+    except requests.RequestExceptions as e:
         print(f"Error: {e}")
         data = None
     return data
@@ -186,12 +186,14 @@ def coin_dashboard(user_portfolio,data_dict):
             print("Input can't be empty :)")
             continue
         url = "https://api.coingecko.com/api/v3/simple/price"
-
-        while True:
+        index = 0
+        while True | index<3:
             clear_screen()
             print("|-----COIN DASHBOARD-----|")
             api_prices = fetch_coin_price(coin_names, url)  
             if api_prices == None:
+                time.sleep(15)
+                index += 1
                 continue      
             for coin in coin_names:
                 if coin not in api_prices:
