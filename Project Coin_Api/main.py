@@ -1,5 +1,10 @@
+import truststore 
+truststore.inject_into_ssl()
+
+
 from app.utils import registration, login, wellcome_page, coin_dashboard,read_info_user_db,read_info_coin_db, main_page,buy_page,sell_page, update_user_db,update_coin_db,portfolio_page
 from app.user import User
+
 while True:
     data = read_info_user_db()
     data_coin = read_info_coin_db()

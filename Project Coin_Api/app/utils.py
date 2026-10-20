@@ -1,4 +1,4 @@
-import requests, urllib3, time, os, random, json
+import requests, time, os, random, json
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 USER_DB = os.path.join(BASE_DIR, "DB_user.json")
@@ -178,7 +178,6 @@ def price_trend(last_price: float, current_price: float) -> str:
 
 def coin_dashboard(user_portfolio,data_dict):
     clear_screen()
-    urllib3.disable_warnings()
     while True:
         user_input = input("Enter coin names price u wanna know: \n-")
         coin_names = (user_input.lower()).split()
@@ -191,7 +190,7 @@ def coin_dashboard(user_portfolio,data_dict):
             clear_screen()
             print("|-----COIN DASHBOARD-----|")
             api_prices = fetch_coin_price(coin_names, url)  
-            if api_prices == None:
+            if api_prices is None:
                 time.sleep(15)
                 index += 1
                 continue
